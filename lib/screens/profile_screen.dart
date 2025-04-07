@@ -1,6 +1,7 @@
 // screens/profile_screen.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../main.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -33,13 +34,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final user = _auth.currentUser;
     return Scaffold(
-      appBar: AppBar(title: Text('Profile')),
+      appBar: AppBar(
+        title: Text('Profile'),
+        actions: [
+          Switch(
+            value: themeNotifier.value == ThemeMode.dark,
+            onChanged: (value) => themeNotifier.value =
+                value ? ThemeMode.dark : ThemeMode.light,
+          )
+        ],
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Logged in as:', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Logged in as:', style: Theme.of(context).textTheme.titleLarge),
             SizedBox(height: 8),
             Text(user?.email ?? 'No email'),
             Divider(height: 32),
@@ -48,12 +58,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               obscureText: true,
               decoration: InputDecoration(labelText: 'New Password'),
             ),
-            SizedBox(height: 12),
+            SizedBox(height: 16),
             ElevatedButton(
               onPressed: changePassword,
               child: Text('Change Password'),
             ),
-            SizedBox(height: 24),
+            Spacer(),
             ElevatedButton(
               onPressed: logout,
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
