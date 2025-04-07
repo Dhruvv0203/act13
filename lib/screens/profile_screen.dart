@@ -30,6 +30,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await _auth.signOut();
   }
 
+  void deleteAccount() async {
+    try {
+      await _auth.currentUser!.delete();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Account deleted successfully')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Account deletion failed: \$e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = _auth.currentUser;
@@ -68,6 +81,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: logout,
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
               child: Text('Logout'),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: deleteAccount,
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+              child: Text('Delete My Account'),
             ),
           ],
         ),
